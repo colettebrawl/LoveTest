@@ -18,6 +18,41 @@
             padding: 1em;
         }
 
+        .lever-container {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 0.5em 1em;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            cursor: pointer;
+        }
+
+        .lever {
+            display: inline-block;
+            width: 30px;
+            height: 15px;
+            background-color: #45a049;
+            border-radius: 5px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .lever-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+            height: 15px;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
         main {
             display: flex;
             flex-direction: column;
@@ -68,6 +103,12 @@
     <header>
         <h1>Love Calculator</h1>
     </header>
+
+    <div class="lever-container" onclick="toggleFakeLove()">
+        <div class="lever">
+            <div class="lever-handle"></div>
+        </div>
+    </div>
     
     <main>
         <div id="result-container">
@@ -80,6 +121,8 @@
     </main>
 
     <script>
+        let fakeLoveActivated = false;
+
         function calculateLove() {
             const name1 = prompt("Enter the first name:");
             const name2 = prompt("Enter the second name:");
@@ -93,9 +136,25 @@
         }
 
         function fakeLove() {
-            const realPercentage = generateRandomPercentage();
-            const fakePercentage = Math.min(100, realPercentage + Math.floor(Math.random() * (100 - realPercentage + 1)));
-            displayLovePercentage(fakePercentage);
+            if (fakeLoveActivated) {
+                const fakePercentage = 100;
+                displayLovePercentage(fakePercentage);
+            } else {
+                const realPercentage = generateRandomPercentage();
+                const fakePercentage = Math.min(100, realPercentage + Math.floor(Math.random() * (100 - realPercentage + 1)));
+                displayLovePercentage(fakePercentage);
+            }
+        }
+
+        function toggleFakeLove() {
+            fakeLoveActivated = !fakeLoveActivated;
+            updateLeverPosition();
+        }
+
+        function updateLeverPosition() {
+            const leverHandle = document.querySelector('.lever-handle');
+            const newPosition = fakeLoveActivated ? 'translate(-50%, -50%)' : 'translate(-50%, 0)';
+            leverHandle.style.transform = newPosition;
         }
 
         function generateRandomPercentage() {
@@ -104,11 +163,11 @@
 
         function displayLovePercentage(percentage) {
             const lovePercentageElement = document.getElementById('love-percentage');
-            lovePercentageElement.style.color = "#e44d26"; // Start de animatie met een andere kleur
+            lovePercentageElement.style.color = "#e44d26";
             setTimeout(() => {
                 lovePercentageElement.innerText = percentage + '%';
-                lovePercentageElement.style.color = "#4caf50"; // Eindig de animatie met een andere kleur
-            }, 100); // Voeg een kleine vertraging toe voor een soepelere animatie
+                lovePercentageElement.style.color = "#4caf50";
+            }, 100);
         }
     </script>
 </body>
