@@ -79,7 +79,7 @@
             justify-content: center;
         }
 
-        #calculate-button, #fake-button {
+        #calculate-button {
             background-color: #4caf50;
             color: white;
             border: none;
@@ -93,7 +93,7 @@
             transition: background-color 0.3s ease;
         }
 
-        #calculate-button:hover, #fake-button:hover {
+        #calculate-button:hover {
             background-color: #45a049;
         }
     </style>
@@ -116,7 +116,6 @@
         </div>
         <div class="button-container">
             <button id="calculate-button" onclick="calculateLove()">Calculate Love Percentage</button>
-            <button id="fake-button" onclick="fakeLove()">Fake Love Percentage</button>
         </div>
     </main>
 
@@ -128,21 +127,15 @@
             const name2 = prompt("Enter the second name:");
 
             if (name1 && name2) {
-                const lovePercentage = generateRandomPercentage();
+                let lovePercentage;
+                if (fakeLoveActivated) {
+                    lovePercentage = 100;
+                } else {
+                    lovePercentage = generateRandomPercentage();
+                }
                 displayLovePercentage(lovePercentage);
             } else {
                 alert("Please enter both names.");
-            }
-        }
-
-        function fakeLove() {
-            if (fakeLoveActivated) {
-                const fakePercentage = 100;
-                displayLovePercentage(fakePercentage);
-            } else {
-                const realPercentage = generateRandomPercentage();
-                const fakePercentage = Math.min(100, realPercentage + Math.floor(Math.random() * (100 - realPercentage + 1)));
-                displayLovePercentage(fakePercentage);
             }
         }
 
